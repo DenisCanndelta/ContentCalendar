@@ -1,0 +1,404 @@
+/* ── Container ───────────────────────────────────────────────────── */
+.calendar-container {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+/* ── Header Top (Title + Refresh) ──────────────────────────────── */
+.cal-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #dddbda;
+    padding-bottom: 10px;
+}
+
+.cal-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #181818;
+}
+/* ── Header ──────────────────────────────────────────────────────── */
+.cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.cal-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.period-label {
+    display: inline-block;
+    min-width: 230px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #181818;
+}
+
+/* ── Legend ──────────────────────────────────────────────────────── */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #706e6b;
+    align-items: center;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.legend-divider {
+    margin-left: 8px;
+    font-weight: 700;
+    color: #aeaeae;
+    border-left: 1px solid #e0e0e0;
+    padding-left: 12px;
+}
+.legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.article-dot        { background: #0d9488; }
+.socialmediapost-dot { background: #7c3aed; }
+
+/* ── Day-of-week headers ─────────────────────────────────────────── */
+.day-headers {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 2px solid #dddbda;
+}
+.day-header {
+    text-align: center;
+    padding: 6px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #706e6b;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+/* ── Grid ────────────────────────────────────────────────────────── */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-left: 1px solid #dddbda;
+}
+.calendar-cell {
+    border-right: 1px solid #dddbda;
+    border-bottom: 1px solid #dddbda;
+    min-height: 110px;
+    padding: 5px;
+    background: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.calendar-cell.other-month { background: #f6f6f6; }
+
+/* ── Day number ──────────────────────────────────────────────────── */
+.day-number-wrapper { margin-bottom: 3px; }
+.day-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 500;
+    color: #181818;
+}
+.other-month .day-number { color: #b0adab; }
+.today .day-number {
+    background: #0176d3;
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ── Record tiles ────────────────────────────────────────────────── */
+.day-records {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.record-tile {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 2px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1.3;
+    gap: 3px;
+    transition: filter 0.1s ease;
+    overflow: hidden;
+    min-height: 20px;
+}
+.record-tile:hover { filter: brightness(0.9); }
+
+/* Articles – editorial teal */
+.article-tile {
+    background: #ccfbf1;
+    color: #134e4a;
+    border-left: 3px solid #0d9488;
+}
+/* Social Media Posts – vibrant purple */
+.socialmediapost-tile {
+    background: #ede9fe;
+    color: #3b0764;
+    border-left: 3px solid #7c3aed;
+}
+
+.tile-name {
+    flex: 1;
+    font-weight: 600;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
+}
+.tile-right {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: 2px;
+}
+.tile-status {
+    font-size: 10px;
+    opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50px;
+}
+
+/* ── Date pills (Article date field indicator) ───────────────────── */
+.date-pill {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.date-pill-pub   { background: #0d9488; color: #fff; }
+.date-pill-write { background: #0891b2; color: #fff; }
+.date-pill-brief { background: #6b7280; color: #fff; }
+
+.more-pill {
+    font-size: 11px;
+    font-weight: 600;
+    color: #0176d3;
+    cursor: pointer;
+    padding: 1px 3px;
+}
+
+/* ── Object badges ───────────────────────────────────────────────── */
+.object-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.article-badge        { background: #0d9488; color: #fff; }
+.socialmediapost-badge { background: #7c3aed; color: #fff; }
+
+/* ── Status pills for Social Media and Articles ────────────────── */
+.status-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+/* Social Media statuses */
+.status-pill-wip       { background: #fef3c7; color: #92400e; }
+.status-pill-ready     { background: #bfdbfe; color: #1e40af; }
+.status-pill-approved  { background: #d1fae5; color: #065f46; }
+.status-pill-revisions { background: #fecaca; color: #7f1d1d; }
+.status-pill-scheduled { background: #e9d5ff; color: #581c87; }
+/* Article stages */
+.status-pill-brf-dev  { background: #e0e7ff; color: #3730a3; }
+.status-pill-wrt      { background: #bfdbfe; color: #1e40af; }
+.status-pill-qa       { background: #fed7aa; color: #92400e; }
+.status-pill-qc       { background: #e9d5ff; color: #581c87; }
+.status-pill-vis      { background: #a5f3fc; color: #164e63; }
+.status-pill-rev      { background: #fecaca; color: #7f1d1d; }
+.status-pill-wp-dft   { background: #e5e7eb; color: #374151; }
+.status-pill-sched    { background: #bbf7d0; color: #14532d; }
+.status-pill-pub      { background: #d1fae5; color: #065f46; }
+
+/* ── Hover card ──────────────────────────────────────────────────── */
+.hover-card {
+    position: absolute;
+    z-index: 9999;
+    background: #fff;
+    border: 1px solid #dddbda;
+    border-radius: 8px;
+    padding: 12px 14px;
+    width: 272px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+    pointer-events: none;
+}
+.hover-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 7px;
+}
+.hover-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #181818;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.hover-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 12px;
+    margin-bottom: 5px;
+    gap: 8px;
+}
+.hover-label { color: #706e6b; flex-shrink: 0; }
+.hover-value { color: #181818; font-weight: 600; text-align: right; }
+
+/* Social media hover extras */
+.hover-img-wrapper {
+    width: 100%;
+    height: 130px;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    background: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+}
+.hover-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #706e6b;
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+.hover-caption {
+    font-size: 12px;
+    color: #3d3d3d;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 6px;
+    min-height: 1.4em;
+}
+.hover-hashtags {
+    font-size: 11px;
+    color: #7c3aed;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 1.3em;
+}
+.hover-approval {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+/* ── Modal overrides ─────────────────────────────────────────────── */
+.modal-dl {}
+.slds-dl__dt {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #706e6b;
+    padding-right: 16px;
+    padding-bottom: 12px;
+    min-width: 110px;
+}
+.slds-dl__dd {
+    font-size: 14px;
+    color: #181818;
+    padding-bottom: 12px;
+}
+.modal-img-wrapper {
+    width: 100%;
+    max-height: 220px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    background: #f3f3f3;
+}
+.modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.modal-field-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #706e6b;
+    margin-bottom: 4px;
+}
+.modal-field-value {
+    font-size: 14px;
+    color: #181818;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+.modal-hashtags { color: #7c3aed; font-weight: 600; }
+.modal-approval {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 4px;
+}

@@ -1,0 +1,234 @@
+<template>
+    <div class="calendar-container">
+
+        <!-- ── Header ──────────────────────────────────────────────────── -->
+        <div class="cal-header-top">
+            <h2 class="cal-title">Content Calendar</h2>
+            <lightning-button-icon
+                icon-name="utility:refresh"
+                variant="border-filled"
+                alternative-text="Refresh"
+                onclick={handleRefresh}
+                title="Refresh calendar data"
+            ></lightning-button-icon>
+        </div>
+        <div class="cal-header">
+            <div class="cal-nav">
+                <lightning-button-icon
+                    icon-name="utility:chevronleft"
+                    variant="border-filled"
+                    alternative-text="Previous"
+                    onclick={handlePrev}
+                ></lightning-button-icon>
+                <span class="period-label">{currentPeriodLabel}</span>
+                <lightning-button-icon
+                    icon-name="utility:chevronright"
+                    variant="border-filled"
+                    alternative-text="Next"
+                    onclick={handleNext}
+                ></lightning-button-icon>
+                <lightning-button label="Today" variant="neutral" onclick={handleToday}></lightning-button>
+            </div>
+            <div>
+                <lightning-button-group>
+                    <lightning-button label="Month" variant={monthButtonVariant} onclick={handleMonthView}></lightning-button>
+                    <lightning-button label="Week"  variant={weekButtonVariant}  onclick={handleWeekView}></lightning-button>
+                </lightning-button-group>
+            </div>
+        </div>
+
+        <!-- ── Legend ──────────────────────────────────────────────────── -->
+        <div class="legend">
+            <span class="legend-item"><span class="legend-dot article-dot"></span>Article</span>
+            <span class="legend-item"><span class="legend-dot socialmediapost-dot"></span>Social Post</span>
+            <span class="legend-item legend-divider">Date shown by:</span>
+            <span class="legend-item"><span class="date-pill-pub">Pub</span> Publishing Date</span>
+            <span class="legend-item"><span class="date-pill-write">Write</span> Writing Due</span>
+            <span class="legend-item"><span class="date-pill-brief">Brief</span> Brief Due</span>
+        </div>
+
+        <!-- ── Day-of-week headers ──────────────────────────────────────── -->
+        <div class="day-headers">
+            <template for:each={dayNames} for:item="dayName">
+                <div key={dayName} class="day-header">{dayName}</div>
+            </template>
+        </div>
+
+        <!-- ── Calendar grid ────────────────────────────────────────────── -->
+        <div class="calendar-grid">
+            <template for:each={calendarDays} for:item="day">
+                <div key={day.key} class={day.cellClass}>
+                    <div class="day-number-wrapper">
+                        <span class="day-number">{day.dayNumber}</span>
+                    </div>
+                    <div class="day-records" style={day.recordsStyle}>
+                        <template for:each={day.records} for:item="record">
+                            <div
+                                key={record.id}
+                                class={record.tileClass}
+                                data-id={record.id}
+                                onmouseenter={handleRecordHover}
+                                onmouseleave={handleRecordLeave}
+                                onclick={handleRecordClick}
+                                role="button"
+                                tabindex="0"
+                            >
+                                <span class="tile-name">{record.name}</span>
+                                <span class="tile-right">
+                                    <span class="tile-status">{record.tileStatusLabel}</span>
+                                    <template if:true={record.isArticle}>
+                                        <span class={record.datePillClass}>{record.shortDateLabel}</span>
+                                    </template>
+                                </span>
+                            </div>
+                        </template>
+                        <template if:true={day.hasMore}>
+                            <div class="more-pill">+{day.moreCount} more</div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- ── Hover card ───────────────────────────────────────────────── -->
+        <template if:true={hoveredRecord}>
+            <div class="hover-card" style={hoverStyle}>
+
+                <!-- Badge row -->
+                <div class="hover-header">
+                    <span class={hoveredRecord.badgeClass}>{hoveredRecord.objectLabel}</span>
+                    <template if:true={hoveredRecord.isArticle}>
+                        <span class={hoveredRecord.statusPillClass}>{hoveredRecord.status}</span>
+                    </template>
+                    <template if:true={hoveredRecord.isSocialMedia}>
+                        <span class={hoveredRecord.statusPillClass}>{hoveredRecord.status}</span>
+                    </template>
+                </div>
+
+                <!-- Record name -->
+                <div class="hover-name">{hoveredRecord.name}</div>
+
+                <!-- Social Media: thumbnail -->
+                <template if:true={hoveredRecord.isSocialMedia}>
+                    <div class="hover-img-wrapper">
+                        <template if:true={hoveredRecord.imageThumbnail}>
+                            <img class="hover-img" src={hoveredRecord.imageThumbnail} alt="Post thumbnail" />
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Social Media: post date -->
+                <template if:true={hoveredRecord.isSocialMedia}>
+                    <div class="hover-row">
+                        <span class="hover-label">Date</span>
+                        <span class="hover-value">{hoveredRecord.formattedDate}</span>
+                    </div>
+                </template>
+
+                <!-- Article: all due dates -->
+                <template if:true={hoveredRecord.isArticle}>
+                    <div class="hover-row">
+                        <span class="hover-label">Brief Due</span>
+                        <span class="hover-value">{hoveredRecord.briefDueDateFormatted}</span>
+                    </div>
+                    <div class="hover-row">
+                        <span class="hover-label">Writing Due</span>
+                        <span class="hover-value">{hoveredRecord.writingDueDateFormatted}</span>
+                    </div>
+                    <div class="hover-row">
+                        <span class="hover-label">Publishing</span>
+                        <span class="hover-value">{hoveredRecord.publishingDateFormatted}</span>
+                    </div>
+                </template>
+
+                <!-- Social Media: caption, hashtags, approval -->
+                <template if:true={hoveredRecord.isSocialMedia}>
+                    <div class="hover-section-label">Caption</div>
+                    <div class="hover-caption">{hoveredRecord.caption}</div>
+                    <div class="hover-hashtags">{hoveredRecord.hashtags}</div>
+                    <div class="hover-approval" style={hoveredRecord.approvalStyle}>
+                        {hoveredRecord.approvalLabel}
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- ── Detail modal ──────────────────────────────────────────────── -->
+        <template if:true={selectedRecord}>
+            <section
+                role="dialog"
+                tabindex="-1"
+                aria-modal="true"
+                aria-label="Record Details"
+                class="slds-modal slds-fade-in-open"
+            >
+                <div class="slds-modal__container">
+
+                    <header class="slds-modal__header">
+                        <lightning-button-icon
+                            class="slds-modal__close"
+                            icon-name="utility:close"
+                            variant="bare-inverse"
+                            size="large"
+                            alternative-text="Close"
+                            onclick={closeModal}
+                        ></lightning-button-icon>
+                        <h2 class="slds-modal__title slds-hyphenate">{selectedRecord.name}</h2>
+                        <p class="slds-m-top_x-small">
+                            <span class={selectedRecord.badgeClass}>{selectedRecord.objectLabel}</span>
+                            <template if:true={selectedRecord.isArticle}>
+                                <span class={selectedRecord.datePillClass} style="margin-left:6px">{selectedRecord.dateFieldLabel}</span>
+                            </template>
+                        </p>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium">
+
+                        <!-- Common: status + date -->
+                        <dl class="slds-dl_horizontal modal-dl">
+                            <dt class="slds-dl__dt">Status</dt>
+                            <dd class="slds-dl__dd">{selectedRecord.status}</dd>
+                            <dt class="slds-dl__dt">Date</dt>
+                            <dd class="slds-dl__dd">{selectedRecord.formattedDate}</dd>
+                        </dl>
+
+                        <!-- Social Media specifics -->
+                        <template if:true={selectedRecord.isSocialMedia}>
+                            <template if:true={selectedRecord.imageThumbnail}>
+                                <div class="modal-img-wrapper">
+                                    <img class="modal-img" src={selectedRecord.imageThumbnail} alt="Post thumbnail" />
+                                </div>
+                            </template>
+                            <template if:true={selectedRecord.caption}>
+                                <p class="modal-field-label">Caption</p>
+                                <p class="modal-field-value">{selectedRecord.caption}</p>
+                            </template>
+                            <template if:true={selectedRecord.hashtags}>
+                                <p class="modal-field-label">Hashtags</p>
+                                <p class="modal-field-value modal-hashtags">{selectedRecord.hashtags}</p>
+                            </template>
+                            <div class="modal-approval" style={selectedRecord.approvalStyle}>
+                                {selectedRecord.approvalLabel}
+                            </div>
+                        </template>
+
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                        <lightning-button
+                            label="Open Record"
+                            variant="brand"
+                            icon-name="utility:new_window"
+                            onclick={openRecord}
+                        ></lightning-button>
+                    </footer>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" onclick={closeModal}></div>
+        </template>
+
+    </div>
+</template>

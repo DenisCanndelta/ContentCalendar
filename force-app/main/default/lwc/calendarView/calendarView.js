@@ -124,6 +124,7 @@ export default class CalendarView extends NavigationMixin(LightningElement) {
 
     // Automatically populated by the record page with the Marketing_Engagement__c Id
     @api   recordId;
+    @api   componentKey;
 
     @track viewMode   = 'monthly';
     @track _year;

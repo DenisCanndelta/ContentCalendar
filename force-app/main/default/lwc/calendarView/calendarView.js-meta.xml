@@ -4,12 +4,21 @@
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
+            <property name="componentKey" type="String" label="Component Key" />
             <objects>
                 <object>Marketing_Engagement__c</object>
             </objects>
+        </targetConfig>
+        <targetConfig targets="lightning__AppPage">
+            <property name="componentKey" type="String" label="Component Key" />
+        </targetConfig>
+        <targetConfig targets="lightning__HomePage">
+            <property name="componentKey" type="String" label="Component Key" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
